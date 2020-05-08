@@ -2,7 +2,7 @@
 
 A very early version of a mod for Griftlands. Depository intended mainly for testing purposes, at least for now.
 
-Official guide for setting up mods [here](https://forums.kleientertainment.com/forums/topic/116914-early-mod-support/).
+The official guide for setting up mods is [here](https://forums.kleientertainment.com/forums/topic/116914-early-mod-support/).
 
 ## Current Changes
 
