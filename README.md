@@ -5,4 +5,5 @@ A very early version of a mod for Griftlands. Depository intended mainly for tes
 ## Current Changes
 
 Few new cards for Sal.
+
 New boss fight (available only through fight test).
