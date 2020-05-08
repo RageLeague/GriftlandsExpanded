@@ -5,12 +5,12 @@ local CARD_FLAGS = battle_defs.CARD_FLAGS
 local negotiation_defs = require "negotiation/negotiation_defs"
 local EVENT = negotiation_defs.EVENT
 
-local def = CharacterDef("SABOSS",
+local def = CharacterDef("Drusk_Prime",
 {
     unique = true,
-    renown = 1,
-    combat_strength = 1, 
-    name = "SABOSS",
+    renown = 3,
+    combat_strength = 3, 
+    name = "Drusk Prime",
     base_def = "NPC_BASE",
     species = SPECIES.BEAST,
     gender = GENDER.MALE,
