@@ -5,7 +5,6 @@ local EVENT = ExtendEnum( negotiation_defs.EVENT,
     "PRE_GAMBLE",
     "GAMBLE",
 })
-local CONFIG = require "JuniorElderExpandedMod:config"
 
 local CARDS =
 {
@@ -51,7 +50,7 @@ local CARDS =
     exhausting_argument = 
     {
         name = "Exhausting Argument",
-        desc = "Attack a random argument, repeat twice.\nShuffle 3 {frustration} into your draw pile.",
+        desc = "Attack a random argument, repeat twice.\nShuffle 2 {frustration} into your draw pile.",
         icon = "negotiation/domineer.tex",
 
         cost = 1,
@@ -61,9 +60,9 @@ local CARDS =
         flags = CARD_FLAGS.HOSTILE,
         rarity = CARD_RARITY.UNCOMMON,
 
-        min_persuasion = 2,
+        min_persuasion = 0,
         max_persuasion = 3,
-        num_copies = 3,
+        num_copies = 2,
         bonus = 2,
 
         OnPostResolve = function( self, minigame, attack )
@@ -84,7 +83,7 @@ local CARDS =
     exhausting_argument_plus = 
     {
         name = "Vicious Argument",
-        desc = "Attack a random argument, repeat twice.\nShuffle 3 {anger} into your draw pile.",
+        desc = "Attack a random argument, repeat twice.\nShuffle 2 {anger} into your draw pile.",
 
 	OnPostResolve = function( self, minigame, attack )
             
@@ -104,9 +103,9 @@ local CARDS =
     exhausting_argument_plus2 =
     {
         name = "Dragging Argument",
-        desc = "Attack a random argument, repeat four times.\nShuffle 3 {frustration} into your draw pile.",
-        min_persuasion = 1,
-        max_persuasion = 2,
+        desc = "Attack a random argument, repeat four times.\nShuffle 2 {frustration} into your draw pile.",
+        min_persuasion = 0,
+        max_persuasion = 1,
         bonus = 4,
     },
 }
@@ -116,7 +115,5 @@ for i, id, carddef in sorted_pairs( CARDS ) do
         carddef.series = "SAL"
     end
     local basic_id = carddef.base_id or id:match( "(.*)_plus.*$" ) or id:match( "(.*)_upgraded[%w]*$") or id:match( "(.*)_supplemental.*$" )
-    if CONFIG.enabled_cards[id] or CONFIG.enabled_cards[basic_id] then
         Content.AddNegotiationCard( id, carddef )
-    end
 end

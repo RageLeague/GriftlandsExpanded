@@ -1,7 +1,6 @@
 local battle_defs = require "battle/battle_defs"
 local CARD_FLAGS = battle_defs.CARD_FLAGS
 local BATTLE_EVENT = battle_defs.BATTLE_EVENT
-local CONFIG = require "JuniorElderExpandedMod:config"
 
 local attacks =
 {	
@@ -10,7 +9,7 @@ local attacks =
         name = "Proper Technique",
         anim = "taunt",
         desc = "Insert {float_butterfly} or {sting_bee} into your hand.",
-	icon = "negotiation/sals_instincts.tex",
+	    icon = "negotiation/sals_instincts.tex",
 
         rarity = CARD_RARITY.RARE,
         flags = CARD_FLAGS.SKILL | CARD_FLAGS.EXPEND,
@@ -166,8 +165,6 @@ local attacks =
     {
         name = "Energy Field",
         icon = "battle/arc_deflection.tex",
-
-        flavour = "'The best way to take a hit is to be in another place when it comes.'",
         
         anim = "taunt",
         target_type = TARGET_TYPE.SELF,
@@ -205,8 +202,6 @@ for i, id, data in sorted_pairs(attacks) do
         data.series = "SAL"
     end
     local basic_id = data.base_id or id:match( "(.*)_plus.*$" ) or id:match( "(.*)_upgraded[%w]*$") or id:match( "(.*)_supplemental.*$" )
-    if CONFIG.enabled_cards[id] or CONFIG.enabled_cards[basic_id] then
         Content.AddBattleCard( id, data )
-    end
 end
 

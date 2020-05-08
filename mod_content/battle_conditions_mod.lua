@@ -14,7 +14,10 @@ local CONDITIONS =
     {
         name = "Enfeeblement",
         feature_desc = "Gain {1} {DEFICIENCY}.",
-		desc = "Attack damage is decreased by {1}.",
+        desc = "Attack damage is decreased by {1}.",
+        desc_fn = function( self, fmt_str, battle )
+            return loc.format(fmt_str, self.stacks )
+        end,
 	    icon = "battle/conditions/power.tex",		
 		apply_sound = "event:/sfx/battle/status/system/Status_Buff_Attack_Power",
         ctype = CTYPE.DEBUFF,
@@ -42,7 +45,7 @@ local CONDITIONS =
     {
         name = "Unbalanced ",
         feature_desc = "Gain {1} {POWER}.",
-		desc = "Amount of defense applied is increased by {1}.",
+		desc = "Amount of defense applied is decreased by {1}.",
         desc_fn = function( self, fmt_str, battle )
             return loc.format(fmt_str, self.stacks )
         end,
@@ -110,13 +113,10 @@ local CONDITIONS =
     {
         name = "Leaking Core",
         desc = "When attacked and damaged shuffle a random goo into attacker´s deck.",
-        desc_fn = function( self, fmt_str )
-            return loc.format( fmt_str, loc.cap( self:GetOwnerName() ))
-        end,
-
-        icon = "battle/conditions/spark_aura.tex",
+        icon = "battle/conditions/acidic_slime.tex",
         target_type = TARGET_TYPE.SELF,
         options = {"corrosive_goo", "anesthetic_goo", "adherent_goo", "replicating_goo"},
+        
         event_handlers =
        {
         [ BATTLE_EVENT.DAMAGE_APPLIED] = function( self, fighter, damage, delta, attack )
@@ -124,12 +124,14 @@ local CONDITIONS =
             if delta > 0 then
             if attack ~= nil then
             if fighter == self.owner then
+            if attack.owner == self.battle:GetPlayerFighter() then
             local cards = {}
             local incepted_card = Battle.Card(self.options[math.random(#self.options)], self.battle:GetPlayerFighter() )
             incepted_card.incepted = true
                incepted_card.show_dealt = true
             self.battle:DealCards( {incepted_card}, self.battle:GetDrawDeck() )
-            end   
+        end   
+        end
         end       
         end
        end,

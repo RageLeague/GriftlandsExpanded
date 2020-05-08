@@ -8,23 +8,21 @@ local EVENT = negotiation_defs.EVENT
 local def = CharacterDef("SABOSS",
 {
     unique = true,
-
+    renown = 1,
+    combat_strength = 1, 
     name = "SABOSS",
     base_def = "NPC_BASE",
-    species = SPECIES.HUMAN,
+    species = SPECIES.BEAST,
     gender = GENDER.MALE,
-    renown = 3,
-    combat_strength = 2,
 		boss = true,
         battle_preview_anim = "anim/boss_drusk_slide.zip",
         battle_preview_offset = { x = 135, y = 0 },
         battle_preview_glow = { colour = 0xC3DE2EFF, bloom = 0.15, threshold = 0.02 },
         battle_preview_audio = "event:/ui/prebattle_overlay/prebattle_overlay_whooshin_boss_drusk1",
-    death_item = "war_story",
+        death_item = "drusk_core",
 
-    faction_id = "RENTORIAN",
-
-    voice_actor = "rentorian_boss",
+        faction_id = MONSTER_FACTION,
+        tags = { "beast", "no_rob", "enforcer" },
 
         combat_anims = { "anim/med_combat_drusk_01.zip" },
         build = "drusk_01",
@@ -33,8 +31,8 @@ local def = CharacterDef("SABOSS",
     fight_data = 
     {
             MAX_MORALE = MAX_MORALE_LOOKUP.IMMUNE,
-        MAX_HEALTH = 200,
-        battle_scale = 1.25,
+            MAX_HEALTH = 180,
+            battle_scale = 1.20,
             status_widget_dx = 0.5,
             status_widget_dy = -0.95,
         
@@ -43,8 +41,9 @@ local def = CharacterDef("SABOSS",
             enraged =
             {
                 name = "Enraged",
-                feature_desc = "You have angered the boss, his attacks are now more agressive.",
-                icon = "battle/conditions/power.tex",		
+                feature_desc = "You have angered the boss, it will more agressive from now on.",
+                desc = "You have angered the boss, it will more agressive from now on.",
+                icon = "battle/conditions/ravenous.tex",		
                 ctype = CTYPE.DEBUFF,
 
                 apply_fx = {"power"},
@@ -56,7 +55,7 @@ local def = CharacterDef("SABOSS",
         attacks = 
         {
             -- Max Health attacks
-            Sdual_blade_flurry = table.extend(NPC_MELEE)
+            forceful_escalation = table.extend(NPC_MELEE)
             {
                 anim = "stab",
                 flags = CARD_FLAGS.MELEE,
@@ -70,7 +69,7 @@ local def = CharacterDef("SABOSS",
 
             },
 
-            Sdual_blade_slice = table.extend(NPC_BUFF)
+            steady_reinforcement = table.extend(NPC_BUFF)
             {
                 anim = "taunt_defend",
                 flags = CARD_FLAGS.BUFF | CARD_FLAGS.SKILL,
@@ -84,7 +83,7 @@ local def = CharacterDef("SABOSS",
                 end
             },
 
-            Sdual_blade_buff = table.extend(NPC_MELEE)
+            cautious_jab = table.extend(NPC_MELEE)
             {
                 anim = "stab",
                 flags = CARD_FLAGS.BUFF | CARD_FLAGS.MELEE,
@@ -98,17 +97,17 @@ local def = CharacterDef("SABOSS",
             },
 
             -- Enraged Attacks
-            Shalberd_swipe = table.extend(NPC_MELEE)
+            wild_flailing = table.extend(NPC_MELEE)
             {
                 anim = "stab",
                 flags = CARD_FLAGS.MELEE,
 
-                base_damage = 2,
+                base_damage = 1,
    		        hit_count = 2,
 
             },
 
-            Shalberd_stab = table.extend(NPC_BUFF)
+            protect_the_core = table.extend(NPC_BUFF)
             {
                 anim = "splort",
                 flags = CARD_FLAGS.BUFF | CARD_FLAGS.SKILL,
@@ -131,13 +130,13 @@ local def = CharacterDef("SABOSS",
 
             },
 
-            Shalberd_buff = table.extend(NPC_MELEE)
+            last_reserves = table.extend(NPC_MELEE)
             {
                 anim = "stab",
                 flags = CARD_FLAGS.BUFF | CARD_FLAGS.MELEE,
 
-                base_damage = 6,
-                defend_amount = 6,
+                base_damage = 2,
+                defend_amount = 2,
                 power_amount = 1,
                 defensiveness_amount = 1,
 
@@ -153,15 +152,15 @@ local def = CharacterDef("SABOSS",
         {
             OnActivate = function( self, fighter )
                 self.high_health_attacks = self:MakePicker()
-                    :AddID("Sdual_blade_flurry", 2)
-                    :AddID("Sdual_blade_slice", 2)
-                    :AddID("Sdual_blade_buff", 1)
+                    :AddID("forceful_escalation", 2)
+                    :AddID("steady_reinforcement", 2)
+                    :AddID("cautious_jab", 1)
 
 
                 self.low_health_attacks = self:MakePicker()
-                    :AddID("Shalberd_swipe", 3)
-                    :AddID("Shalberd_stab", 1)
-                    :AddID("Shalberd_buff", 1)
+                    :AddID("wild_flailing", 3)
+                    :AddID("protect_the_core", 1)
+                    :AddID("last_reserves", 1)
 
                     self.fighter:AddCondition("leaking_core", 1, self)
                 self:SetPattern(self.HighHealth)
