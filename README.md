@@ -8,6 +8,6 @@ The official guide for setting up mods is [here](https://forums.kleientertainmen
 
 Few new cards for Sal.
 
-New boss fight (available only through fight test).
+New boss fight (available only through fight test under codename "Drusk_Prime").
 
 - intended approximately for day 3, currently under balance testing
