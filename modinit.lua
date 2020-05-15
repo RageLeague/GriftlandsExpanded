@@ -11,6 +11,7 @@ local function OnLoad()
         "sal_battle_mod",
         --"sal_battle_grafts_mod",
         "custom_boss_mod",
+        "convo_override",
     }
     for k, filepath in ipairs(LOAD_FILE_ORDER) do
         require(self_dir .. filepath)
