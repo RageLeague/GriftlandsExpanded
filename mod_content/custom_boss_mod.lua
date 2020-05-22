@@ -60,7 +60,7 @@ local def = CharacterDef("Drusk_Prime",
                 anim = "stab",
                 flags = CARD_FLAGS.MELEE,
 
-                base_damage = 4,
+                base_damage = 8,
                 defensiveness_amount = 2	,
 
                 OnPostResolve = function( self, battle, attack )
@@ -74,7 +74,7 @@ local def = CharacterDef("Drusk_Prime",
                 anim = "taunt_defend",
                 flags = CARD_FLAGS.BUFF | CARD_FLAGS.SKILL,
                 target_type = TARGET_TYPE.SELF,
-                defend_amount = 4,
+                defend_amount = 6,
                 power_amount = 2,
 
                 OnPostResolve = function( self, battle, attack )
@@ -88,7 +88,7 @@ local def = CharacterDef("Drusk_Prime",
                 anim = "stab",
                 flags = CARD_FLAGS.BUFF | CARD_FLAGS.MELEE,
 
-                base_damage = 6,
+                base_damage = 8,
                 defend_amount = 6,
 
                 OnPostResolve = function( self, battle, attack )
@@ -102,32 +102,25 @@ local def = CharacterDef("Drusk_Prime",
                 anim = "stab",
                 flags = CARD_FLAGS.MELEE,
 
-                base_damage = 1,
+                base_damage = 6,
    		        hit_count = 2,
 
             },
 
-            protect_the_core = table.extend(NPC_BUFF)
+            protect_the_core = table.extend(NPC_RANGED)
             {
                 anim = "splort",
-                flags = CARD_FLAGS.BUFF | CARD_FLAGS.SKILL,
-                target_type = TARGET_TYPE.SELF,
-                defend_amount = 6,
+
+                flags = CARD_FLAGS.RANGED,
+                target_mod = TARGET_MOD.TEAM,
+                base_damage = 8,
                 options = {"corrosive_goo", "anesthetic_goo", "adherent_goo", "replicating_goo"},
-                num_copies = 2,
 
-                OnPostResolve = function( self, battle, attack )
-                    self.owner:AddCondition("DEFEND", self.defend_amount, self)
-
-                    local cards = {}
-                    for i = 1, self.num_copies do
-                    local incepted_card = Battle.Card(self.options[math.random(#self.options)], self.battle:GetPlayerFighter() )
-                    incepted_card.incepted = true
-                    incepted_card.show_dealt = true
-                    self.battle:DealCards( {incepted_card}, self.battle:GetDrawDeck() )
-                    end
-                end,
-
+                features =
+                {
+                    CRIPPLE = 2,
+                    EXPOSED = 2,
+                },
             },
 
             last_reserves = table.extend(NPC_MELEE)
@@ -135,8 +128,8 @@ local def = CharacterDef("Drusk_Prime",
                 anim = "stab",
                 flags = CARD_FLAGS.BUFF | CARD_FLAGS.MELEE,
 
-                base_damage = 2,
-                defend_amount = 2,
+                base_damage = 6,
+                defend_amount = 6,
                 power_amount = 1,
                 defensiveness_amount = 1,
 
@@ -158,7 +151,7 @@ local def = CharacterDef("Drusk_Prime",
 
 
                 self.low_health_attacks = self:MakePicker()
-                    :AddID("wild_flailing", 3)
+                    :AddID("wild_flailing", 2)
                     :AddID("protect_the_core", 1)
                     :AddID("last_reserves", 1)
 
