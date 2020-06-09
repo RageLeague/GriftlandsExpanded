@@ -8,7 +8,7 @@ Mod for Griftlands that expands the game by adding new cards and bosses. In the 
 
 3 new bosses for Sal's story
 
-Few new battle conditions
+Generous amount of typos and inconsistent formatting
 
 ## Installation Guide
 
