@@ -37,7 +37,7 @@ Please, keep in mind that this is a mod so it can't be perfectly balanced.
 
 Thanks to RageLeague - he is the reason you can see the bosses in the game.
 
-Check out his [Extra cards mod](https://github.com/RageLeague/GriftlandsExtraCardMod) and [Cross character campaign](https://github.com/RageLeague/CrossCharacterCampaign)
+Check out his [Extra Cards Mod](https://github.com/RageLeague/GriftlandsExtraCardMod) and [Cross Character Campaign](https://github.com/RageLeague/CrossCharacterCampaign)
 
 All the art, animations, and sounds are taken from the game and belong to Klei.
 
