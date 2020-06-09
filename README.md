@@ -29,7 +29,7 @@ I can't guarantee compatibility with other mods, but it can probably be used alo
 
 ## Feedback and Troubleshooting
 
-If you want to report bugs, complain about balance, or give any other kind of feedback please direct it [here](______).
+If you want to report bugs, complain about balance, or give any other kind of feedback please direct it [here](https://forums.kleientertainment.com/forums/topic/118889-custom-bosses-and-cards/).
 
 I am a quite busy right now, so it may take a while to update the mod, but I will try to fix any bugs that will inevitably appear.
 
