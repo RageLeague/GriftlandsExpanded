@@ -10,10 +10,57 @@ local EVENT = negotiation_defs.EVENT
 local CONDITIONS = 
 {
 
-    DEFICIENCY =
+    DISORIENTATION = 
+    {
+        name = "Disorientation",
+        desc = "Damage dealt and defense applied is halved, remove 1 stack after you play a card.",
+        icon = "battle/conditions/stagger.tex",
+
+        ctype = CTYPE.DEBUFF,
+
+        apply_sound = "event:/sfx/battle/status/system/Status_Buff_Attack_Cripple",
+        apply_fx = {"cripple"},
+        fx_sound = "event:/sfx/battle/status/system/Status_Buff_Attack_Cripple_FX",
+        fx_sound_delay = 0.85,
+        target_type = TARGET_TYPE.ENEMY,
+
+        damage_mult = 0.5,
+
+        event_priorities =
+        {
+            [ BATTLE_EVENT.CALC_DAMAGE ] = EVENT_PRIORITY_MULTIPLIER,
+        },
+
+        event_handlers =
+        {
+            [ BATTLE_EVENT.CALC_DAMAGE ] = function( self, card, target, dmgt )
+                if card.owner == self.owner then
+                    dmgt:ModifyDamage( math.round( dmgt.min_damage * self.damage_mult ),
+                                       math.round( dmgt.max_damage * self.damage_mult ),
+                                       self )
+                end
+            end,
+
+            [ BATTLE_EVENT.CALC_MODIFY_STACKS ] = function( self, acc, condition_id, fighter, card )
+                if condition_id == "DEFEND" and fighter == self.owner then
+                    if acc.value > 0 then
+                        acc:AddValue( -math.floor( acc.value / 2 ), self )
+                    end
+                end
+            end,
+
+            [ BATTLE_EVENT.START_RESOLVE ] = function( self, battle, card )
+                if card.owner == self.owner then
+                    self.owner:RemoveCondition( self.id, 1 )
+                end
+            end,
+        }
+    },
+    
+    ENFEEBLEMENT =
     {
         name = "Enfeeblement",
-        feature_desc = "Gain {1} {DEFICIENCY}.",
+        feature_desc = "Gain {1} {ENFEEBLEMENT}.",
         desc = "Attack damage is decreased by {1}.",
         desc_fn = function( self, fmt_str, battle )
             return loc.format(fmt_str, self.stacks )
@@ -109,32 +156,32 @@ local CONDITIONS =
 	}
     },
 
-    leaking_core = 
+    PERFECT_PARRY = 
     {
-        name = "Leaking Core",
-        desc = "When attacked and damaged shuffle a random goo into attacker´s deck.",
-        icon = "battle/conditions/acidic_slime.tex",
-        target_type = TARGET_TYPE.SELF,
-        options = {"corrosive_goo", "anesthetic_goo", "adherent_goo", "replicating_goo"},
-        
-        event_handlers =
-       {
-        [ BATTLE_EVENT.DAMAGE_APPLIED] = function( self, fighter, damage, delta, attack )
-        
-            if delta > 0 then
-            if attack ~= nil then
-            if fighter == self.owner then
-            if attack.owner == self.battle:GetPlayerFighter() then
-            local cards = {}
-            local incepted_card = Battle.Card(self.options[math.random(#self.options)], self.battle:GetPlayerFighter() )
-            incepted_card.incepted = true
-               incepted_card.show_dealt = true
-            self.battle:DealCards( {incepted_card}, self.battle:GetDrawDeck() )
-        end   
-        end
-        end       
-        end
-       end,
+        name = "Perfect Parry",
+        desc = "Gain {1} {COMBO} when attack is fully defended. Remove all stacks at the start of the turn.",
+        desc_fn = function( self, fmt_str, battle )
+            return loc.format(fmt_str, self.stacks )
+        end,
+        icon = "battle/conditions/cautious.tex",
+
+        max_stacks = 99,
+        min_stacks = -99,
+
+        event_handlers = 
+        {
+
+            [ BATTLE_EVENT.ON_HIT] = function( self, battle, attack, hit )
+                if hit.target == self.owner and attack.card and attack.card:IsAttackCard() and hit.defended then
+                    self.owner:AddCondition("COMBO", self.stacks, self)
+                end
+            end,
+
+            [ BATTLE_EVENT.BEGIN_TURN ] = function( self, fighter )
+                if self.owner == fighter then
+                    self.owner:RemoveCondition( self.id )
+                end
+            end,
         },
     },
 

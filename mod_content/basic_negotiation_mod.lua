@@ -10,7 +10,7 @@ local CARDS =
         icon = "negotiation/agitation.tex",
         flags = CARD_FLAGS.UNPLAYABLE | CARD_FLAGS.STATUS | CARD_FLAGS.AUTOPLAY | CARD_FLAGS.EXPEND,
         rarity = CARD_RARITY.UNIQUE,
-        desc = "Automaticly played at the end of your turn.",
+        desc = "Automatically played at the end of your turn.",
 
     },
 
@@ -20,22 +20,20 @@ local CARDS =
         icon = "negotiation/bulldoze.tex",
         flags = CARD_FLAGS.UNPLAYABLE | CARD_FLAGS.STATUS | CARD_FLAGS.AUTOPLAY | CARD_FLAGS.EXPEND,
         rarity = CARD_RARITY.UNIQUE,
-        desc = "Automaticly played at the end of your turn.\nGain 2 {VULNERABILITY}",
+        desc = "Gain 2 {VULNERABILITY} and 2 {DOMINANCE} when drawn.\nAutomatically played at the end of your turn.",
         
-	vulnerability_stacks = 2,
+        vulnerability_stacks = 2,
+        dominance_stacks = 2,
 
-	features =
+        event_handlers =
         {
-            DOMINANCE = 2,
-	    
-        },
-
-        OnPostResolve = function( self, minigame, targets )
-            local stacks = self.negotiator:GetModifierStacks("INFLUENCE")
-            self.negotiator:AddModifier("INFLUENCE", stacks)
+           [ EVENT.DRAW_CARD ] = function( self, minigame, card, start_of_turn )
+            if card == self then
+            self.negotiator:AddModifier("DOMINANCE", self.dominance_stacks, self)
             self.negotiator:AddModifier("VULNERABILITY", self.vulnerability_stacks, self)
-        end,
-
+            end
+            end,
+        }
     },
 }
 
