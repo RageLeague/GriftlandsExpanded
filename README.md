@@ -16,7 +16,7 @@ Official guide [here](https://forums.kleientertainment.com/forums/topic/116914-e
 
 1. Go to "[user]/AppData/Roaming/Klei/Griftlands/" (it should contain save folder, log.txt and other game-generated files)
 2. Create a new folder called "mods"
-3. Transfer "GriftlandsExpanded-master" into that folder
+3. Transfer "GriftlandsExpanded-master" folder in there
 4. Start a new run and have fun
 
 ## Compatibility
