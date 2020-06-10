@@ -9,8 +9,9 @@ return function(convo)
 
         :ClearFn()
         :Fn(function(cxt)
+            
             cxt:Dialog("DIALOG_INTRO")
-
+            
             if not cxt.quest.param.jake_help then
                 cxt.quest.param.ship_jake:MoveToLimbo()
             end
@@ -19,7 +20,8 @@ return function(convo)
                 cxt.quest.param.ship_clerk:MoveToLimbo()
             end
 
-            cxt.quest.param.beast = TheGame:GetGameState():AddSkinnedAgent(weightedpick(BOSS)) 
+            local boss_def = TheGame:GetGameProfile():GetNoStreakRandom("SAL_DAY_3_BOSS_PICK", {"SHROOG", "DRUSK_1", "DRUSK_ANCIENT"}, 2)
+            cxt.quest.param.beast = TheGame:GetGameState():AddSkinnedAgent(boss_def) 
             cxt.enc:SetPrimaryCast(cxt.quest.param.beast)
 
             local allies = {}
