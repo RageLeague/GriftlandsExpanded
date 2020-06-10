@@ -1,18 +1,7 @@
--- Defines the boss that can show up and the weighting of the boss
-local BOSS = {
-    JAKES_ASSASSIN = 1,           
-    JAKES_ASSASSIN2 = 1,
-    JAKES_GHOST = 1
-}
+
 return function(convo)
     convo:GetState("STATE_ASSASSINATION_ATTEMPT")
-        :Loc{
-            LE_TESTOS = [[
-                * You sense a breach in the time-space continuum.
-                player:
-                    Wait, what?
-            ]]
-        }
+
         :ClearFn()
         :Fn(function(cxt) 
             if cxt:FirstLoop() then
@@ -22,7 +11,10 @@ return function(convo)
                 cxt.enc:GetScreen():ClearHistory()
                 cxt.enc:GetScreen():SetBlur(false)
                 cxt:Dialog("DIALOG_INTRO")
-                local assassin = cxt.quest:CreateSkinnedAgent(weightedpick(BOSS))
+                
+                local boss_def = TheGame:GetGameProfile():GetNoStreakRandom("SAL_DAY_2_BOSS_PICK", {"JAKES_ASSASSIN", "JAKES_ASSASSIN2", "JAKES_GHOST"}, 2)
+                local assassin = cxt.quest:CreateSkinnedAgent( boss_def )
+
                 TheGame:GetGameState():AddAgent( assassin )
                 assassin:MoveToLocation(cxt.location)
                 cxt.enc:SetPrimaryCast(assassin)

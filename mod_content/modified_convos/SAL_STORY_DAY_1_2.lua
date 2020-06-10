@@ -1,16 +1,11 @@
 -- Defines the boss that can show up and the weighting of the boss
-local BOSS = {
-    DRONE_GOON = 1,           
-    SPARK_BARON_BOSS = 1,
-    GUARDIAN_AUTOMECH = 1
-}
+
 return function(convo)
     convo:GetState("STATE_KASHIO_STUFF")
 
         :ClearFn()
         :Fn(function(cxt) 
             local guard
-            local goons
             
             cxt.quest.param.done_asking_about_kashio = true
             cxt.location:SetPlax("INT_GrogNDog_Damaged_1")
@@ -25,7 +20,8 @@ return function(convo)
                 end
             end
 
-            goons = {cxt.quest:CreateSkinnedAgent(weightedpick(BOSS))}
+            local boss_def = TheGame:GetGameProfile():GetNoStreakRandom("SAL_DAY_1_BOSS_PICK", {"DRONE_GOON", "SPARK_BARON_BOSS", "GUARDIAN_AUTOMECH"}, 2)
+            local goons = {cxt.quest:CreateSkinnedAgent( boss_def )}
 
             cxt.quest:AssignCastMember("kashio_goon", goons[1])
             --
