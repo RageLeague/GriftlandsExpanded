@@ -1,9 +1,5 @@
 -- Defines the boss that can show up and the weighting of the boss
-local BOSS = {
-    SHROOG = 1,           
-    DRUSK_1 = 1,
-    DRUSK_ANCIENT = 1
-}
+
 return function(convo)
     convo:GetState("STATE_FIGHT_BEAST")
 
