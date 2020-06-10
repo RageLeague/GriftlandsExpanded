@@ -7,12 +7,12 @@ local BATTLE_EVENT = battle_defs.BATTLE_EVENT
 
 local BATTLE_GRAFTS =
 {
-    asd_cowl =
+    sa_cowl =
     {
-        name = "ASD Cowl",
+        name = "SA Cowl",
         desc = "Start battle with 10 {DEFENSE}.",
         rarity = CARD_RARITY.COMMON,
-	icon = "icons/items/graft_digger.tex",
+	    icon = "icons/items/graft_digger.tex",
         defense_amt = 10,
         OnActivateFighter = function(self, fighter)
             fighter:AddCondition( "DEFENSE", self:GetDef().combo_amt )

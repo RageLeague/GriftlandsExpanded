@@ -45,7 +45,7 @@ function Convo:ClearFn()
     return self
 end
 
-for k, filepath in ipairs( filepath.list_files( CONVO_DIR, "*.lua", true )) do
+for k, filepath in ipairs( filepath.list_files( CONVO_DIR, "*.lua", true )) do -- ConvoId isnt same as file name, check through debug screen in campaign. Second convo should have _2 after file name, 1 is skiped. Probably.
     local name = filepath:match( "(.+)[.]lua$" )
     print(name)
     if name then
@@ -59,4 +59,4 @@ end
 -- for id, fn in pairs(CONVO_OVERRIDE) do
 --     local convos = Content.GetConvoStateGraph(id)
 --     fn(convos)
--- end
+-- end 

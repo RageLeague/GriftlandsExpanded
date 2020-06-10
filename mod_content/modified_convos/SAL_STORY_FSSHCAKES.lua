@@ -1,23 +1,16 @@
 -- Defines the boss that can show up and the weighting of the boss
 local BOSS = {
-    SHROOG = 1,
+    SHROOG = 1,           
     DRUSK_1 = 1,
-    Drusk_Prime = 1
+    DRUSK_ANCIENT = 1
 }
 return function(convo)
     convo:GetState("STATE_FIGHT_BEAST")
-        :Loc{
-            LE_TESTOS = [[
-                * You sense a breach in the time-space continuum.
-                player:
-                    Wait, what?
-            ]]
-        }
+
         :ClearFn()
         :Fn(function(cxt)
-            cxt:Dialog("LE_TESTOS")
             cxt:Dialog("DIALOG_INTRO")
-            
+
             if not cxt.quest.param.jake_help then
                 cxt.quest.param.ship_jake:MoveToLimbo()
             end
@@ -61,4 +54,4 @@ return function(convo)
 
 
         end)
-end
+end 

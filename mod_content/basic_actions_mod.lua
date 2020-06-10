@@ -8,7 +8,6 @@ local attacks =
     corrosive_goo =
     {
         name = "Corrosive Goo",
-        flavour = "'It's horrible to hang onto this thing, but even worse if you throw it away.'",
         desc = "At the end of your turn take 3 damage.",
 	    icon = "battle/status_lumin_burn.tex",
         cost = 1,
@@ -31,11 +30,10 @@ local attacks =
         },
     },
    
-    anesthetic_goo =
+    enfeebling_goo =
     {
-    	name = "Anesthetic Goo",
-    	desc = "Gain 1 {DEFICIENCY} while this is in your hand.",
-        flavour = "'You haven't seen this make before, but it's easy enough to figure out.'",
+    	name = "Enfeebling Goo",
+    	desc = "Gain 1 {ENFEEBLEMENT} while this is in your hand.",
     	cost = 1,
 	    icon = "battle/numbness.tex",
         target_type = TARGET_TYPE.SELF,
@@ -49,10 +47,10 @@ local attacks =
             [ BATTLE_EVENT.CARD_MOVED ] = function( self, card, source_deck, source_idx, target_deck, target_idx )
                 if card == self then
                     if target_deck and target_deck:GetDeckType() == DECK_TYPE.IN_HAND then
-                        self.owner:AddCondition( "DEFICIENCY", 1 )
+                        self.owner:AddCondition( "ENFEEBLEMENT", 1 )
 
                     elseif source_deck and source_deck:GetDeckType() == DECK_TYPE.IN_HAND then
-                        self.owner:RemoveCondition( "DEFICIENCY", 1 )
+                        self.owner:RemoveCondition( "ENFEEBLEMENT", 1 )
                     end
                 end
             end,
@@ -63,7 +61,6 @@ local attacks =
     {
     	name = "Adherent Goo",
     	desc = "Gain 1 {UNBALACED} while this is in your hand.",
-        flavour = "'You haven't seen this make before, but it's easy enough to figure out.'",
     	cost = 1,
 	    icon = "battle/robo_kick.tex",
         target_type = TARGET_TYPE.SELF,
@@ -90,7 +87,6 @@ local attacks =
     replicating_goo = 
     {
         name = "Replicating Goo",
-        flavour = "'The Blue solution! May it burn the brightest throughout the dark!'",
         desc = "If this card is in your hand at the end of the turn, divide it into 2.",
     	cost = 1,
 	    icon = "negotiation/horrible_rash.tex",

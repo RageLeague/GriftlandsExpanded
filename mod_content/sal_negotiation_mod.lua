@@ -50,8 +50,8 @@ local CARDS =
     exhausting_argument = 
     {
         name = "Exhausting Argument",
-        desc = "Attack a random argument, repeat twice.\nShuffle 2 {frustration} into your draw pile.",
-        icon = "negotiation/domineer.tex",
+        desc = "Attack a random argument, repeat once.\nShuffle 2 {frustration} into your draw pile.",
+        icon = "negotiation/unyielding.tex",
 
         cost = 1,
         max_xp = 6,
@@ -60,10 +60,10 @@ local CARDS =
         flags = CARD_FLAGS.HOSTILE,
         rarity = CARD_RARITY.UNCOMMON,
 
-        min_persuasion = 0,
-        max_persuasion = 3,
+        min_persuasion = 2,
+        max_persuasion = 4,
         num_copies = 2,
-        bonus = 2,
+        bonus = 1,
 
         OnPostResolve = function( self, minigame, attack )
             
@@ -83,7 +83,7 @@ local CARDS =
     exhausting_argument_plus = 
     {
         name = "Vicious Argument",
-        desc = "Attack a random argument, repeat twice.\nShuffle 2 {anger} into your draw pile.",
+        desc = "Attack a random argument, repeat once.\nShuffle 2 {anger} into your draw pile.",
 
 	OnPostResolve = function( self, minigame, attack )
             
@@ -103,11 +103,137 @@ local CARDS =
     exhausting_argument_plus2 =
     {
         name = "Dragging Argument",
-        desc = "Attack a random argument, repeat four times.\nShuffle 2 {frustration} into your draw pile.",
-        min_persuasion = 0,
-        max_persuasion = 1,
-        bonus = 4,
+        desc = "Attack a random argument, repeat three times.\nShuffle 2 {frustration} into your draw pile.",
+        min_persuasion = 1,
+        max_persuasion = 2,
+        bonus = 3,
     },
+
+    last_laugh =
+    {
+        name = "Last Laugh",
+        icon = "negotiation/quip.tex",
+        desc = "Deal 1 bonus damage for every card played this turn.",
+
+        max_xp = 7,
+        cost = 1,
+
+        min_persuasion = 2,
+        max_persuasion = 2,
+
+        flags = CARD_FLAGS.HOSTILE,
+        rarity = CARD_RARITY.UNCOMMON,
+
+        event_priorities =
+        {
+            [ EVENT.CALC_PERSUASION ] = EVENT_PRIORITY_ADDITIVE,
+        },
+
+        event_handlers = 
+        {
+            [ EVENT.CALC_PERSUASION ] = function( self, source, persuasion )
+                if source == self then
+                    local bonus = 0
+                    local count = self.engine:CountCardsPlayed()
+                            bonus = bonus + count * 1
+                    persuasion:AddPersuasion( bonus, bonus, self )
+                end
+            end,
+        },
+    },
+    last_laugh_plus =
+    {
+        name = "Boosted Last Laugh",
+        min_persuasion = 4,
+        max_persuasion = 4,
+    },
+
+    last_laugh_plus2 =
+    {
+        name = "Tall Last Laugh",
+        desc = "Deal 2 bonus damage for every card played this turn.",
+
+        cost = 2,
+
+        event_priorities =
+        {
+            [ EVENT.CALC_PERSUASION ] = EVENT_PRIORITY_ADDITIVE,
+        },
+
+        event_handlers = 
+        {
+            [ EVENT.CALC_PERSUASION ] = function( self, source, persuasion )
+                if source == self then
+                    local bonus = 0
+                    local count = self.engine:CountCardsPlayed()
+                            bonus = bonus + count * 2
+                    persuasion:AddPersuasion( bonus, bonus, self )
+                end
+            end,
+        },
+    },
+
+    backhanded_compliment = 
+    {
+        name = "Backhanded Compliment",
+        icon = "negotiation/bluff.tex",
+        desc = "{INCEPT} 1 {DOUBT}.\n{EVOKE}: Play 4 Diplomacy cards in a single turn. {1}",
+        desc_fn = function( self, fmt_str )
+            if self.engine and self.evoke_count then
+                local str = loc.format( LOC"CARD_ENGINE.CARDS_PLAYED", self.evoke_count )
+                return loc.format( fmt_str, str )
+            else
+                return loc.format( fmt_str, "" )
+            end
+        end,
+        flags = CARD_FLAGS.DIPLOMACY | CARD_FLAGS.UNPLAYABLE,
+        rarity = CARD_RARITY.UNCOMMON,
+        auto_target = true,
+        target_mod = TARGET_MOD.RANDOM1,
+
+        cost = 0,
+
+        evoke_max = 4,
+        stacks = 1,
+
+        deck_handlers = { DECK_TYPE.DRAW, DECK_TYPE.DISCARDS },
+
+        event_handlers = 
+        {
+            [ EVENT.POST_RESOLVE ] = function( self, minigame, card )
+                if card.owner == self.owner then
+                    if CheckBits( card.flags, CARD_FLAGS.DIPLOMACY ) then
+                        self:Evoke( self.evoke_max )
+                    end
+                end
+            end,
+
+            [ EVENT.END_TURN ] = function( self, minigame, negotiator )
+                if negotiator == self.negotiator then
+                    self:ResetEvoke()
+                end
+            end,
+        },
+
+        OnPostResolve = function( self, minigame, targets )
+            self.anti_negotiator:InceptModifier("DOUBT", self.stacks, self )
+        end,
+    },
+
+    backhanded_compliment_plus = 
+    {
+        name = "Pale Backhanded Compliment",
+        desc = "{INCEPT} 2 {DOUBT}.\n{EVOKE}: Play 4 Diplomacy cards in a single turn. {1}",
+        stacks = 2,
+    },
+
+    backhanded_compliment_plus2 = 
+    {
+        name = "Boosted Backhanded Compliment",
+        desc = "{INCEPT} 1 {DOUBT}.\n{EVOKE}: Play 3 Diplomacy cards in a single turn. {1}",
+        evoke_max = 3,
+    },
+
 }
 
 for i, id, carddef in sorted_pairs( CARDS ) do
